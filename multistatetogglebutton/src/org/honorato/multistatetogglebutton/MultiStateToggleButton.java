@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.graphics.Typeface;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +22,9 @@ public class MultiStateToggleButton extends ToggleButton {
 
     private static final String TAG = MultiStateToggleButton.class.getSimpleName();
 
-    private static final String KEY_BUTTON_STATES  = "button_states";
+    private static final String KEY_BUTTON_STATES = "button_states";
     private static final String KEY_INSTANCE_STATE = "instance_state";
-
+    private Typeface typeface;
     /**
      * A list of rendered buttons. Used to get state, among others
      */
@@ -32,7 +33,7 @@ public class MultiStateToggleButton extends ToggleButton {
     /**
      * The specified texts
      */
-    CharSequence[]   texts;
+    CharSequence[] texts;
 
     /**
      * If true, multiple buttons can be pressed at the same time
@@ -161,6 +162,9 @@ public class MultiStateToggleButton extends ToggleButton {
             } else {
                 b = (Button) inflater.inflate(R.layout.view_center_toggle_button, mainLayout, false);
             }
+            if (typeface != null) {
+                b.setTypeface(typeface);
+            }
             b.setText(texts != null ? texts[i] : "");
             if (imageResourceIds != null && imageResourceIds[i] != 0) {
                 b.setCompoundDrawablesWithIntrinsicBounds(imageResourceIds[i], 0, 0, 0);
@@ -246,6 +250,12 @@ public class MultiStateToggleButton extends ToggleButton {
         setElements(elements, null, new boolean[size]);
     }
 
+    public void setElements(List<?> elements, Typeface typeface) {
+        this.typeface = typeface;
+        int size = elements == null ? 0 : elements.size();
+        setElements(elements, new boolean[size]);
+    }
+
     public void setElements(List<?> elements) {
         int size = elements == null ? 0 : elements.size();
         setElements(elements, new boolean[size]);
@@ -301,19 +311,19 @@ public class MultiStateToggleButton extends ToggleButton {
         if (colorPressed != 0 || colorNotPressed != 0) {
             button.setBackgroundColor(selected ? colorPressed : colorNotPressed);
         } else if (colorPressedBackground != 0 || colorNotPressedBackground != 0) {
-          button.setBackgroundColor(selected ? colorPressedBackground : colorNotPressedBackground);
+            button.setBackgroundColor(selected ? colorPressedBackground : colorNotPressedBackground);
         }
         if (button instanceof Button) {
             int style = selected ? R.style.WhiteBoldText : R.style.PrimaryNormalText;
             ((AppCompatButton) button).setTextAppearance(this.getContext(), style);
             if (colorPressed != 0 || colorNotPressed != 0) {
                 ((AppCompatButton) button).setTextColor(!selected ? colorPressed : colorNotPressed);
-            } 
+            }
             if (colorPressedText != 0 || colorNotPressedText != 0) {
-              ((AppCompatButton) button).setTextColor(selected ? colorPressedText : colorNotPressedText);
+                ((AppCompatButton) button).setTextColor(selected ? colorPressedText : colorNotPressedText);
             }
             if (pressedBackgroundResource != 0 || notPressedBackgroundResource != 0) {
-              button.setBackgroundResource(selected ? pressedBackgroundResource : notPressedBackgroundResource);
+                button.setBackgroundResource(selected ? pressedBackgroundResource : notPressedBackgroundResource);
             }
         }
     }
